@@ -1,7 +1,7 @@
 package test4;
 
 import java.util.Stack;
-
+	
 public class Pila {
 	private Stack<Integer> pila = new Stack<Integer>();
 	// Añade el numero solo si es mayor que 2 y menor que 20
