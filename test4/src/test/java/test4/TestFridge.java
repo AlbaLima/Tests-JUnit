@@ -2,48 +2,53 @@ package test4;
 
 import static org.junit.Assert.*;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
+
+@RunWith(Parameterized.class)
 public class TestFridge {
 	private Fridge frigo;
 
-	@Before
-	public void setUp() throws Exception {
+	private String[] lista;
 
-		frigo = new Fridge();
+
+
+	@Parameters
+	public static Collection<String[][]> data() {
+		return Arrays.asList(new String[][][] { 
+			{ {"manzana", "pera", "platano"} },
+		});
+	}
+
+
+	public TestFridge(String[] lista) {
+		this.frigo = new Fridge();
+		this.lista = lista;
 	}
 
 	@Test
-	public void comprobarMeterComida() {
-		assertTrue("Se ha introducido un platano en el frigo", frigo.put("platano"));
-	}
+	public void comprobarFuncionamiento() throws NoSuchItemException {
 
-	@Test
-	public void comprobarContenido() {
-		frigo.put("platano");
-		assertFalse("No se ha introducido ninguna manzana", frigo.contains("manzana"));
-		assertTrue("Se ha introducido un platano", frigo.contains("platano"));
-	}
-	
-	@Test
-	public void comprobarVaciado() {
+		for (String fruta : this.lista) {
+			assertTrue("Se han introducido la fruta en el frigo", frigo.put(fruta));
+			assertTrue("La fruta está en el frigo", frigo.contains(fruta));
 
-		try {
-			frigo.put("platano");
-			frigo.take("platano");
-			assertFalse("Se ha introducido un platano", frigo.contains("platano"));
-			frigo.take("platano");
-			fail("Se ha borrado un elemento que no existe");
-		} catch (NoSuchItemException e) {	
+			frigo.take(fruta);
+			assertFalse("La fruta se ha sacado correctamente", frigo.contains(fruta));
+
+			try {
+				frigo.take(fruta);
+				fail("Se ha borrado un elemento que no existe");
+			} catch (NoSuchItemException e) {
+			}
 		}
-	}
-	
-	
-
-	@After
-	public void tearDown() throws Exception {
 	}
 
 }

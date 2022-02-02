@@ -2,35 +2,40 @@ package test4;
 
 import static org.junit.Assert.*;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TestOperador {
+import junit.framework.AssertionFailedError;
+
+public class TestOperador extends CoreMatchers {
 
 	@Test
 	public void comprobarSumar() {
 		int suma5 = OperadorAritmetico.suma(2, 3);
-		assertTrue("El valor de la suma es 5", 5 == suma5);
+		assertThat("El valor de la suma es 5", suma5, is (5));
+		assertThat("El tipo de dato es correcto", suma5, isA (Integer.class));
 	}
 
-	@Test
-	public void comprobarDivision() {
+	@Test (expected = Exception.class)
+	public void comprobarDivision()  throws Exception{
 		try {
-			int division = OperadorAritmetico.division(9, 2);
-			assertTrue("El valor de la división debe ser 4.5", division == 4.5);
-		}catch (Exception e) {
-			fail("La operación de división ha dado un error");
+			double division = OperadorAritmetico.division(9, 2);
+			assertThat("El valor de la división debe ser 4.5", division, is (4.5));
+			assertThat("El tipo de dato es correcto", division, isA (Double.class));
+			
+		} catch (Exception e) {
 		}
 	}
 
-	@Test
-	public void comprobarDivisionPorCero() {
+	@Test(expected = Exception.class)
+	public void comprobarDivisionPorCero() throws Exception {
 		try {
 			OperadorAritmetico.division(9, 0);
 			fail("Un número divido debe devolver Exception");
 		} catch (Exception e) {
-
+			assertThat(e, isA(Exception.class));
 		}
 	}
 

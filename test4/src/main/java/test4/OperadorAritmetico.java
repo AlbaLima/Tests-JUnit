@@ -6,10 +6,10 @@ public class OperadorAritmetico {
 		return a + b;
 	}
 	
-	public static int division(int a, int b) throws Exception {
+	public static double division(int a, int b) throws Exception {
 		if(b==0) {
 			throw new Exception();
 		}
-		return a / b;
+		return (double) a / b;
 	}
 }
